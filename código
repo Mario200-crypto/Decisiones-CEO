@@ -1,115 +1,90 @@
-Definición conceptual
+# Importar librerías necesarias
+import numpy as np
 
-# Decisión: Conjunto de acciones
+# Definir las probabilidades y utilidades
+prob_cierre_conocido = 0.5
+prob_cierre_no_conocido = 0.3
+utilidad_cierre = 10000
+utilidad_no_cierre = -2000
 
-    Reuniones con clientes.
+prob_productiva_ciencia = 0.7
+prob_productiva_finanzas = 0.5
+prob_productiva_marketing = 0.2
+utilidad_productiva = 5000
+utilidad_no_productiva = -1000
 
-    Reuniones con el equipo de trabajo.
+utilidad_oficina_por_hora = 1000
 
-    Trabajo en la oficina (planeación y logística).
+# Definir el tiempo total disponible
+tiempo_total = 8  # horas
 
- Cada acción consiste en asignar una cantidad de tiempo a cada actividad, respetando los límites mínimos y máximos:
+# Solicitar información al usuario
+cliente_conocido = input("¿El cliente es conocido? (sí/no): ").strip().lower() == "sí"
+departamento_reunion = input("¿Con qué departamento es la junta hoy? (Ciencia de Datos/Finanzas/Marketing): ").strip()
 
-    Reuniones con clientes: Entre 1 y 4 horas.
+# Calcular las probabilidades basadas en la entrada del usuario
+prob_cierre = prob_cierre_conocido if cliente_conocido else prob_cierre_no_conocido
 
-    Reuniones con el equipo: Entre 1 y 3 horas.
+if departamento_reunion == "Ciencia de Datos":
+    prob_productiva = prob_productiva_ciencia
+elif departamento_reunion == "Finanzas":
+    prob_productiva = prob_productiva_finanzas
+elif departamento_reunion == "Marketing":
+    prob_productiva = prob_productiva_marketing
+else:
+    raise ValueError("Departamento no reconocido")
 
-    Trabajo en la oficina: Entre 1 y 4 horas.
+# Calcular la utilidad esperada por hora para cada actividad
+def utilidad_esperada_por_hora_clientes():
+    return prob_cierre * utilidad_cierre + (1 - prob_cierre) * utilidad_no_cierre
 
-# Estados de la naturaleza (Ω): Configuraciones posibles del mundo
+def utilidad_esperada_por_hora_equipo():
+    return prob_productiva * utilidad_productiva + (1 - prob_productiva) * utilidad_no_productiva
 
+def utilidad_esperada_por_hora_oficina():
+    return utilidad_oficina_por_hora
 
+# Utilidades esperadas por hora
+utilidad_clientes = utilidad_esperada_por_hora_clientes()
+utilidad_equipo = utilidad_esperada_por_hora_equipo()
+utilidad_oficina = utilidad_esperada_por_hora_oficina()
 
-    Reuniones con clientes:
+# Mostrar las utilidades esperadas por hora
+print(f"\nUtilidad esperada por hora en reuniones con clientes: ${utilidad_clientes:.2f}")
+print(f"Utilidad esperada por hora en reuniones con el equipo ({departamento_reunion}): ${utilidad_equipo:.2f}")
+print(f"Utilidad esperada por hora en trabajo en la oficina: ${utilidad_oficina:.2f}")
 
-        Cierre de venta: Ocurre con una probabilidad del 30% (o 50% si el cliente es conocido).
-
-        No cierre de venta: Ocurre con una probabilidad del 70% (o 50% si el cliente es conocido).
-
-    Reuniones con el equipo de trabajo:
-
-        Reunión productiva: Ocurre con una probabilidad del 70% (Ciencia de Datos), 50% (Finanzas) o 20% (Marketing).
-
-        Reunión no productiva: Ocurre con una probabilidad del 30% (Ciencia de Datos), 50% (Finanzas) o 80% (Marketing).
-
-    Trabajo en la oficina:
-
-        Siempre productivo: No hay incertidumbre, siempre se avanza en tareas críticas.
-
-# Información proxy (Z): Observaciones ruidosas correlacionadas con Ω
-
-
-    Reuniones con clientes:
-
-        Feedback del cliente: Si el cliente muestra interés o urgencia, aumenta la probabilidad de cierre de venta.
-
-        Historial de ventas: Si el cliente ha cerrado ventas antes, la probabilidad de cierre aumenta al 50%.
-
-    Reuniones con el equipo de trabajo:
-
-        Agenda de la reunión: Si la reunión está bien estructurada, es más probable que sea productiva.
-
-        Tipo de equipo: La probabilidad de productividad varía según el equipo (Ciencia de Datos: 70%, Finanzas: 50%, Marketing: 20%).
+# Asignar tiempo en función de la utilidad esperada por hora
+def distribuir_tiempo(tiempo_total, utilidades, limites_min, limites_max):
+    # Normalizar las utilidades para obtener proporciones
+    utilidad_total = sum(utilidades)
+    proporciones = [u / utilidad_total for u in utilidades]
     
-    Trabajo en la oficina:
-     
-        Siempre efectivo
+    # Distribuir el tiempo en función de las proporciones
+    tiempo_asignado = [p * tiempo_total for p in proporciones]
+    
+    # Ajustar los tiempos a los límites mínimos y máximos
+    for i in range(len(tiempo_asignado)):
+        tiempo_asignado[i] = max(limites_min[i], min(limites_max[i], tiempo_asignado[i]))
+    
+    return tiempo_asignado
 
+# Límites mínimos y máximos de tiempo para cada actividad
+limites_min = [1, 1, 1]  # Mínimo 1 hora para cada actividad
+limites_max = [4, 3, 4]  # Máximo 4 horas para clientes/oficina, 3 horas para equipo
 
-# Función de Utilidad (U(ω, d))
+# Distribuir el tiempo
+tiempo_asignado = distribuir_tiempo(tiempo_total, [utilidad_clientes, utilidad_equipo, utilidad_oficina], limites_min, limites_max)
 
+# Mostrar los resultados
+print(f"\nTiempo asignado a reuniones con clientes: {tiempo_asignado[0]:.2f} horas")
+print(f"Tiempo asignado a reuniones con el equipo ({departamento_reunion}): {tiempo_asignado[1]:.2f} horas")
+print(f"Tiempo asignado a trabajo en la oficina: {tiempo_asignado[2]:.2f} horas")
 
-Reuniones con clientes:
-
-Si se cierra la venta: $10,000.
-
-Si no se cierra la venta: -$2,000 (costo de oportunidad y tiempo perdido).
-
-La utilidad esperada por reunión es:
-     
-U(clientes) =p(Cierre)×10,000+p(No cierre)×(−2,000).
- 
-La utilidad esperada por reunión depende del equipo:
-
-U(equipo) = (probabilidad de que sea productiva)×5,000 + (probabilidad de que no sea productiva) ×(−1,000)=3,500−300
-
-Trabajo en la oficina:
-
-U(oficina) = 1,000 × horas.
-
-# Modelo Probabilístico (p(ω) o p(ω∣Z))
-
-Reuniones con clientes:
-
-
-Si el cliente es conocido: 
-p(Cierre∣conocido) = 50%
-
-
-Si el cliente no es conocido: 
-p(Cierre∣No conocido)=30%
-
-
-Reuniones con el equipo de trabajo:
-
-Probabilidad de que la reunión sea productiva:
-
-Ciencia de Datos: 
-
-p(Productiva∣Ciencia de Datos)=70%.
-
-Finanzas: 
-
-p(Productiva∣Finanzas)=50%.
-
-Marketing: 
-
-p(Productiva∣Marketing)=20%.
-
-Trabajo en la oficina:
-
-p(Productivo)=100%.
-
-
-
-
+# Calcular la utilidad total esperada
+utilidad_total = (
+    tiempo_asignado[0] * utilidad_clientes +
+    tiempo_asignado[1] * utilidad_equipo +
+    tiempo_asignado[2] * utilidad_oficina
+)
+print(f"\nUtilidad total esperada: ${utilidad_total:.2f}")
