@@ -1,6 +1,6 @@
-Definición conceptual
+#Definición conceptual
 
-Decisión: Conjunto de acciones
+#Decisión: Conjunto de acciones
 
 Reuniones con clientes.
 
@@ -16,7 +16,7 @@ Reuniones con el equipo: Entre 1 y 3 horas.
 
 Trabajo en la oficina: Entre 1 y 4 horas.
 
- Estados de la naturaleza (Ω): Configuraciones posibles del mundo
+# Estados de la naturaleza (Ω): Configuraciones posibles del mundo
 
 
 
