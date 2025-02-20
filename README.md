@@ -1,6 +1,6 @@
-#Definición conceptual
+#  Definición conceptual
 
-#Decisión: Conjunto de acciones
+#  Decisión: Conjunto de acciones
 
 Reuniones con clientes.
 
