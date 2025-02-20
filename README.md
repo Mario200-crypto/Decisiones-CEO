@@ -250,6 +250,7 @@ Definición conceptual
      
         Siempre efectivo
 
+# Código
       
       # Importar librerías necesarias
       import numpy as np
