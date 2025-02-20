@@ -1,6 +1,6 @@
 Definición conceptual
 
-# Decisión: Conjunto de acciones
+Decisión: Conjunto de acciones
 
     Reuniones con clientes.
 
@@ -16,7 +16,7 @@ Definición conceptual
 
     Trabajo en la oficina: Entre 1 y 4 horas.
 
-# Estados de la naturaleza (Ω): Configuraciones posibles del mundo
+ Estados de la naturaleza (Ω): Configuraciones posibles del mundo
 
 
 
@@ -192,3 +192,5 @@ Posibles heurísticas: ¿Si no puedo modelarlo todo con precisión, qué reglas 
     Dedicar 30% del tiempo a la actividad con utilidad media.
 
     Dedicar 10% del tiempo a la actividad con menor utilidad.
+
+
