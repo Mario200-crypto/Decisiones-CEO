@@ -250,5 +250,94 @@ Definición conceptual
      
         Siempre efectivo
 
-
-
+      
+      # Importar librerías necesarias
+      import numpy as np
+      
+      # Definir las probabilidades y utilidades
+      prob_cierre_conocido = 0.5
+      prob_cierre_no_conocido = 0.3
+      utilidad_cierre = 10000
+      utilidad_no_cierre = -2000
+      
+      prob_productiva_ciencia = 0.7
+      prob_productiva_finanzas = 0.5
+      prob_productiva_marketing = 0.2
+      utilidad_productiva = 5000
+      utilidad_no_productiva = -1000
+      
+      utilidad_oficina_por_hora = 1000
+      
+      # Definir el tiempo total disponible
+      tiempo_total = 8  # horas
+      
+      # Solicitar información al usuario
+      cliente_conocido = input("¿El cliente es conocido? (sí/no): ").strip().lower() == "sí"
+      departamento_reunion = input("¿Con qué departamento es la junta hoy? (Ciencia de Datos/Finanzas/Marketing): ").strip()
+      
+      # Calcular las probabilidades basadas en la entrada del usuario
+      prob_cierre = prob_cierre_conocido if cliente_conocido else prob_cierre_no_conocido
+      
+      if departamento_reunion == "Ciencia de Datos":
+          prob_productiva = prob_productiva_ciencia
+      elif departamento_reunion == "Finanzas":
+          prob_productiva = prob_productiva_finanzas
+      elif departamento_reunion == "Marketing":
+          prob_productiva = prob_productiva_marketing
+      else:
+          raise ValueError("Departamento no reconocido")
+      
+      # Calcular la utilidad esperada por hora para cada actividad
+      def utilidad_esperada_por_hora_clientes():
+          return prob_cierre * utilidad_cierre + (1 - prob_cierre) * utilidad_no_cierre
+      
+      def utilidad_esperada_por_hora_equipo():
+          return prob_productiva * utilidad_productiva + (1 - prob_productiva) * utilidad_no_productiva
+      
+      def utilidad_esperada_por_hora_oficina():
+          return utilidad_oficina_por_hora
+      
+      # Utilidades esperadas por hora
+      utilidad_clientes = utilidad_esperada_por_hora_clientes()
+      utilidad_equipo = utilidad_esperada_por_hora_equipo()
+      utilidad_oficina = utilidad_esperada_por_hora_oficina()
+      
+      # Mostrar las utilidades esperadas por hora
+      print(f"\nUtilidad esperada por hora en reuniones con clientes: ${utilidad_clientes:.2f}")
+      print(f"Utilidad esperada por hora en reuniones con el equipo ({departamento_reunion}): ${utilidad_equipo:.2f}")
+      print(f"Utilidad esperada por hora en trabajo en la oficina: ${utilidad_oficina:.2f}")
+      
+      # Asignar tiempo en función de la utilidad esperada por hora
+      def distribuir_tiempo(tiempo_total, utilidades, limites_min, limites_max):
+          # Normalizar las utilidades para obtener proporciones
+          utilidad_total = sum(utilidades)
+          proporciones = [u / utilidad_total for u in utilidades]
+          
+          # Distribuir el tiempo en función de las proporciones
+          tiempo_asignado = [p * tiempo_total for p in proporciones]
+          
+          # Ajustar los tiempos a los límites mínimos y máximos
+          for i in range(len(tiempo_asignado)):
+              tiempo_asignado[i] = max(limites_min[i], min(limites_max[i], tiempo_asignado[i]))
+          
+          return tiempo_asignado
+      
+      # Límites mínimos y máximos de tiempo para cada actividad
+      limites_min = [1, 1, 1]  # Mínimo 1 hora para cada actividad
+      limites_max = [4, 3, 4]  # Máximo 4 horas para clientes/oficina, 3 horas para equipo
+      
+      # Distribuir el tiempo
+      tiempo_asignado = distribuir_tiempo(tiempo_total, [utilidad_clientes, utilidad_equipo, utilidad_oficina], limites_min, limites_max)
+      
+      # Mostrar los resultados
+      print(f"\nTiempo asignado a reuniones con clientes: {tiempo_asignado[0]:.2f} horas")
+      print(f"Tiempo asignado a reuniones con el equipo ({departamento_reunion}): {tiempo_asignado[1]:.2f} horas")
+      print(f"Tiempo asignado a trabajo en la oficina: {tiempo_asignado[2]:.2f} horas")
+      
+      # Calcular la utilidad total esperada
+      utilidad_total = (
+          tiempo_asignado[0] * utilidad_clientes +
+          tiempo_asignado[1] * utilidad_equipo +
+          tiempo_asignado[2] * utilidad_oficina
+      )
+      print(f"\nUtilidad total esperada: ${utilidad_total:.2f}")
