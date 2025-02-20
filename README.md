@@ -193,4 +193,62 @@ Posibles heurísticas: ¿Si no puedo modelarlo todo con precisión, qué reglas 
 
     Dedicar 10% del tiempo a la actividad con menor utilidad.
 
+Definición conceptual
+
+# Decisión: Conjunto de acciones
+
+    Reuniones con clientes.
+
+    Reuniones con el equipo de trabajo.
+
+    Trabajo en la oficina (planeación y logística).
+
+ Cada acción consiste en asignar una cantidad de tiempo a cada actividad, respetando los límites mínimos y máximos:
+
+    Reuniones con clientes: Entre 1 y 4 horas.
+
+    Reuniones con el equipo: Entre 1 y 3 horas.
+
+    Trabajo en la oficina: Entre 1 y 4 horas.
+
+# Estados de la naturaleza (Ω): Configuraciones posibles del mundo
+
+
+
+    Reuniones con clientes:
+
+        Cierre de venta: Ocurre con una probabilidad del 30% (o 50% si el cliente es conocido).
+
+        No cierre de venta: Ocurre con una probabilidad del 70% (o 50% si el cliente es conocido).
+
+    Reuniones con el equipo de trabajo:
+
+        Reunión productiva: Ocurre con una probabilidad del 70% (Ciencia de Datos), 50% (Finanzas) o 20% (Marketing).
+
+        Reunión no productiva: Ocurre con una probabilidad del 30% (Ciencia de Datos), 50% (Finanzas) o 80% (Marketing).
+
+    Trabajo en la oficina:
+
+        Siempre productivo: No hay incertidumbre, siempre se avanza en tareas críticas.
+
+# Información proxy (Z): Observaciones ruidosas correlacionadas con Ω
+
+
+    Reuniones con clientes:
+
+        Feedback del cliente: Si el cliente muestra interés o urgencia, aumenta la probabilidad de cierre de venta.
+
+        Historial de ventas: Si el cliente ha cerrado ventas antes, la probabilidad de cierre aumenta al 50%.
+
+    Reuniones con el equipo de trabajo:
+
+        Agenda de la reunión: Si la reunión está bien estructurada, es más probable que sea productiva.
+
+        Tipo de equipo: La probabilidad de productividad varía según el equipo (Ciencia de Datos: 70%, Finanzas: 50%, Marketing: 20%).
+    
+    Trabajo en la oficina:
+     
+        Siempre efectivo
+
+
 
